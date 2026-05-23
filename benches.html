@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benches — NCLT Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Editorial four-color palette — matches index.html and process-flow.html */
+  --ink:#1a1a1a;
+  --ink-soft:#3a3a3a;
+  --ink-muted:#6a6a6a;
+  --paper:#f7f3ec;
+  --paper-deep:#efe9dc;
+  --rule:#d8d2c4;
+  --rule-soft:#e5dfd1;
+
+  /* Accent palette */
+  --gold:#c19a3e;      /* statutory */
+  --coral:#c75d4d;     /* actual / problem */
+  --teal:#3a7a7a;      /* amendment */
+  --moss:#5a7548;      /* reform / good */
+
+  /* Type */
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter Tight',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.55;
+  font-size:16px;
+  font-feature-settings:"ss01","ss02","cv11";
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ============ TOP STRIP ============ */
+.topstrip{
+  border-bottom:1px solid var(--rule);
+  background:var(--paper);
+  padding:14px 0;
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(8px);
+  background:rgba(247,243,236,0.96);
+}
+.topstrip-inner{
+  max-width:1280px;margin:0 auto;padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;gap:32px;
+}
+.brand{display:flex;align-items:baseline;gap:14px;text-decoration:none;color:var(--ink)}
+.brand-mark{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:21px;letter-spacing:-0.01em;
+}
+.brand-tag{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.nav{display:flex;gap:2px;align-items:center;flex-wrap:wrap}
+.nav a{
+  font-family:var(--sans);font-size:13px;font-weight:500;
+  color:var(--ink-soft);text-decoration:none;
+  padding:7px 14px;border-radius:2px;
+  transition:all 0.15s;
+  letter-spacing:0.01em;
+}
+.nav a:hover{background:var(--paper-deep);color:var(--ink)}
+.nav a.active{
+  color:var(--ink);
+  background:var(--ink);color:var(--paper);
+}
+.timestamp{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink-muted);white-space:nowrap;
+}
+
+/* ============ BREADCRUMB ============ */
+.crumb{
+  max-width:1280px;margin:0 auto;padding:24px 32px 0;
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.crumb a{color:var(--ink-muted);text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.15s}
+.crumb a:hover{border-bottom-color:var(--ink-muted)}
+.crumb-sep{margin:0 8px;opacity:0.5}
+
+/* ============ HERO ============ */
+.hero{
+  max-width:1280px;margin:0 auto;padding:36px 32px 56px;
+  border-bottom:1px solid var(--rule);
+}
+.hero-tag{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:18px;
+}
+.hero h1{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(34px,5vw,56px);
+  line-height:1.05;letter-spacing:-0.025em;
+  max-width:920px;margin-bottom:24px;
+}
+.hero h1 em{font-style:italic;font-weight:300;color:var(--ink-soft)}
+.hero-lede{
+  font-family:var(--serif);font-size:19px;line-height:1.55;
+  color:var(--ink-soft);max-width:780px;font-weight:300;
+}
+.hero-meta{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:24px;margin-top:36px;padding-top:28px;
+  border-top:1px solid var(--rule);
+}
+.hero-meta-item{}
+.hero-meta-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:6px;
+}
+.hero-meta-value{
+  font-family:var(--sans);font-size:14px;
+  font-weight:500;color:var(--ink);line-height:1.4;
+}
+.hero-meta-value a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule);transition:border-color 0.15s}
+.hero-meta-value a:hover{border-bottom-color:var(--ink)}
+
+/* ============ SECTION ============ */
+.section{
+  max-width:1280px;margin:0 auto;padding:72px 32px;
+  border-bottom:1px solid var(--rule);
+}
+.section:last-child{border-bottom:none}
+.section-mark{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:18px;
+}
+.section h2{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(28px,3.6vw,40px);
+  line-height:1.1;letter-spacing:-0.02em;
+  max-width:880px;margin-bottom:18px;
+}
+.section h2 em{font-style:italic;font-weight:300;color:var(--ink-soft)}
+.section-intro{
+  font-family:var(--serif);font-size:17px;line-height:1.6;
+  color:var(--ink-soft);font-weight:300;
+  max-width:760px;margin-bottom:48px;
+}
+
+/* ============ DATA HEADLINE STRIP ============ */
+.headline-strip{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:0;margin:48px 0 24px;
+  border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+}
+.headline-stat{
+  padding:24px 24px 26px;
+  border-right:1px solid var(--rule);
+}
+.headline-stat:last-child{border-right:none}
+.headline-stat-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:10px;line-height:1.4;
+}
+.headline-stat-value{
+  font-family:var(--serif);font-weight:400;
+  font-size:36px;line-height:1;letter-spacing:-0.02em;
+  color:var(--ink);margin-bottom:8px;
+}
+.headline-stat-note{
+  font-family:var(--sans);font-size:11px;
+  color:var(--ink-muted);line-height:1.4;
+}
+.headline-stat-note a{color:var(--ink-muted);border-bottom:1px solid var(--rule);text-decoration:none}
+.headline-stat-note a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* ============ BENCH GRID ============ */
+.grid-meta{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:24px;margin-bottom:24px;flex-wrap:wrap;
+}
+.grid-meta-left{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.legend{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.legend-item{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.legend-dot{width:9px;height:9px;border-radius:50%}
+.legend-dot.principal{background:var(--coral)}
+.legend-dot.regional{background:var(--gold)}
+.legend-dot.newer{background:var(--teal)}
+
+.bench-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1px;background:var(--rule);
+  border:1px solid var(--rule);
+}
+.bench-card{
+  background:var(--paper);padding:24px 22px 22px;
+  cursor:pointer;
+  transition:background 0.15s;
+  position:relative;
+  display:flex;flex-direction:column;
+  min-height:200px;
+}
+.bench-card:hover{background:var(--paper-deep)}
+.bench-card-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:12px;margin-bottom:12px;
+}
+.bench-name{
+  font-family:var(--serif);font-weight:500;
+  font-size:22px;line-height:1.15;letter-spacing:-0.015em;
+  color:var(--ink);
+}
+.bench-type-dot{
+  width:10px;height:10px;border-radius:50%;
+  flex-shrink:0;margin-top:8px;
+}
+.bench-type-dot.principal{background:var(--coral)}
+.bench-type-dot.regional{background:var(--gold)}
+.bench-type-dot.newer{background:var(--teal)}
+.bench-type-label{
+  font-family:var(--mono);font-size:9.5px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:14px;
+}
+.bench-jurisd{
+  font-family:var(--sans);font-size:12.5px;
+  color:var(--ink-soft);line-height:1.5;
+  margin-bottom:auto;padding-bottom:16px;
+}
+.bench-card-footer{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding-top:14px;border-top:1px solid var(--rule-soft);
+  gap:12px;
+}
+.bench-courts{
+  font-family:var(--mono);font-size:10.5px;
+  letter-spacing:0.08em;color:var(--ink-muted);
+  text-transform:uppercase;
+}
+.bench-courts strong{
+  font-family:var(--serif);font-weight:500;
+  font-size:18px;letter-spacing:-0.01em;
+  color:var(--ink);text-transform:none;
+  margin-right:4px;
+}
+.bench-explore{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.bench-card:hover .bench-explore{color:var(--ink)}
+.bench-explore::after{content:" →";transition:transform 0.15s}
+.bench-card:hover .bench-explore::after{margin-left:2px}
+
+/* ============ MODAL ============ */
+.modal-bg{
+  position:fixed;inset:0;
+  background:rgba(26,26,26,0.45);
+  backdrop-filter:blur(4px);
+  z-index:200;
+  display:none;
+  align-items:flex-start;justify-content:center;
+  padding:40px 24px;
+  overflow-y:auto;
+}
+.modal-bg.active{display:flex}
+.modal{
+  background:var(--paper);
+  max-width:880px;width:100%;
+  border:1px solid var(--ink);
+  position:relative;
+  animation:rise 0.3s cubic-bezier(0.2,0.8,0.2,1);
+}
+@keyframes rise{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  background:none;border:1px solid var(--rule);
+  width:36px;height:36px;border-radius:50%;
+  cursor:pointer;font-family:var(--sans);
+  font-size:18px;color:var(--ink-soft);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+}
+.modal-close:hover{border-color:var(--ink);color:var(--ink);background:var(--paper-deep)}
+.modal-body{padding:48px 56px 48px}
+.modal-tag{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:12px;
+}
+.modal-title{
+  font-family:var(--serif);font-weight:400;
+  font-size:42px;line-height:1.05;letter-spacing:-0.025em;
+  margin-bottom:14px;
+}
+.modal-subtitle{
+  font-family:var(--serif);font-size:17px;
+  color:var(--ink-soft);font-weight:300;line-height:1.5;
+  font-style:italic;margin-bottom:32px;
+}
+.modal-stat-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:0;margin-bottom:36px;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+.modal-stat{
+  padding:18px 18px 20px;
+  border-right:1px solid var(--rule);
+}
+.modal-stat:last-child{border-right:none}
+.modal-stat-label{
+  font-family:var(--mono);font-size:9.5px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:8px;line-height:1.3;
+}
+.modal-stat-value{
+  font-family:var(--serif);font-weight:400;
+  font-size:26px;line-height:1;letter-spacing:-0.015em;
+  color:var(--ink);
+}
+.modal-stat-value.unknown{
+  font-size:14px;font-style:italic;color:var(--ink-muted);
+  font-family:var(--sans);font-weight:400;
+}
+.modal-section{margin-bottom:32px}
+.modal-section:last-child{margin-bottom:0}
+.modal-section-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:12px;
+  padding-bottom:8px;border-bottom:1px solid var(--rule);
+}
+.modal-section-body{
+  font-family:var(--serif);font-size:15.5px;
+  line-height:1.65;color:var(--ink-soft);font-weight:300;
+}
+.modal-section-body strong{font-weight:500;color:var(--ink)}
+.modal-section-body em{font-style:italic}
+.modal-section-body a{
+  color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--rule);
+}
+.modal-section-body a:hover{border-bottom-color:var(--ink)}
+.modal-section-body ul{
+  list-style:none;margin-top:8px;
+}
+.modal-section-body li{
+  padding:8px 0 8px 18px;position:relative;
+  border-top:1px solid var(--rule-soft);
+}
+.modal-section-body li:first-child{border-top:none}
+.modal-section-body li::before{
+  content:"";position:absolute;left:0;top:18px;
+  width:6px;height:1px;background:var(--ink-muted);
+}
+.modal-gap{
+  background:var(--paper-deep);padding:18px 22px;
+  border-left:3px solid var(--coral);
+  font-family:var(--sans);font-size:13.5px;
+  line-height:1.6;color:var(--ink-soft);
+}
+.modal-gap-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--coral);margin-bottom:8px;font-weight:600;
+}
+.modal-sources{
+  padding-top:20px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;line-height:1.7;
+  color:var(--ink-muted);
+}
+.modal-sources a{color:var(--ink-muted);text-decoration:none;border-bottom:1px solid var(--rule)}
+.modal-sources a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* ============ SECTORAL ============ */
+.sector-intro-grid{
+  display:grid;grid-template-columns:2fr 1fr;
+  gap:48px;margin-bottom:40px;
+  align-items:start;
+}
+@media(max-width:780px){.sector-intro-grid{grid-template-columns:1fr}}
+.sector-callout{
+  background:var(--paper-deep);padding:24px 26px;
+  border-left:3px solid var(--gold);
+}
+.sector-callout-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:10px;
+}
+.sector-callout-text{
+  font-family:var(--serif);font-size:15px;line-height:1.55;
+  color:var(--ink-soft);font-weight:300;
+}
+.sector-callout-text strong{color:var(--ink);font-weight:500}
+
+.sector-table-wrap{
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  margin-top:8px;
+}
+.sector-header{
+  display:grid;
+  grid-template-columns:2.2fr 1fr 1fr 1.2fr;
+  gap:20px;padding:14px 24px;
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.sector-row{
+  display:grid;
+  grid-template-columns:2.2fr 1fr 1fr 1.2fr;
+  gap:20px;padding:18px 24px;align-items:center;
+  border-bottom:1px solid var(--rule-soft);
+  transition:background 0.15s;
+}
+.sector-row:last-child{border-bottom:none}
+.sector-row:hover{background:var(--paper-deep)}
+.sector-row.total{
+  border-top:1px solid var(--ink);
+  border-bottom:none;
+  background:var(--paper-deep);
+  font-weight:500;
+}
+.sector-name{
+  font-family:var(--serif);font-size:17px;font-weight:400;
+  color:var(--ink);
+}
+.sector-row.total .sector-name{font-weight:500}
+.sector-value{
+  font-family:var(--serif);font-size:17px;font-weight:400;
+  color:var(--ink);letter-spacing:-0.01em;
+}
+.sector-row.total .sector-value{font-weight:500}
+.sector-bar-wrap{display:flex;align-items:center;gap:10px}
+.sector-bar{
+  flex:1;height:6px;background:var(--rule-soft);
+  border-radius:0;overflow:hidden;
+}
+.sector-bar-fill{height:100%;background:var(--ink-soft)}
+.sector-bar-fill.cirp{background:var(--coral)}
+.sector-bar-fill.liq{background:var(--ink-soft)}
+.sector-bar-pct{
+  font-family:var(--mono);font-size:11px;color:var(--ink-muted);
+  white-space:nowrap;width:42px;text-align:right;
+}
+
+.sector-tab-row{
+  display:flex;gap:0;margin-bottom:0;
+  border-bottom:1px solid var(--rule);
+}
+.sector-tab{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  background:none;border:none;padding:12px 20px;
+  color:var(--ink-muted);cursor:pointer;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;transition:all 0.15s;
+}
+.sector-tab:hover{color:var(--ink-soft)}
+.sector-tab.active{
+  color:var(--ink);border-bottom-color:var(--ink);
+}
+.sector-pane{display:none}
+.sector-pane.active{display:block}
+
+.sector-note{
+  margin-top:24px;font-family:var(--serif);
+  font-size:14.5px;line-height:1.6;color:var(--ink-soft);
+  font-weight:300;max-width:880px;
+}
+.sector-note strong{font-weight:500;color:var(--ink)}
+.sector-note a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+.sector-note a:hover{border-bottom-color:var(--ink)}
+
+.variance-card{
+  background:var(--paper-deep);padding:24px 28px;
+  margin-top:32px;border-left:3px solid var(--teal);
+}
+.variance-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:12px;font-weight:600;
+}
+.variance-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:24px;margin-top:14px;
+}
+.variance-item-source{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:6px;
+}
+.variance-item-stat{
+  font-family:var(--serif);font-size:18px;
+  color:var(--ink);font-weight:400;line-height:1.35;
+}
+
+/* ============ FOOTER ============ */
+.footer{
+  background:var(--ink);color:var(--paper);
+  padding:56px 32px 36px;
+}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-top{
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:40px;padding-bottom:36px;
+  border-bottom:1px solid rgba(247,243,236,0.15);
+}
+@media(max-width:780px){.footer-top{grid-template-columns:1fr 1fr}}
+.footer-brand-mark{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:22px;letter-spacing:-0.01em;margin-bottom:12px;
+}
+.footer-blurb{
+  font-family:var(--sans);font-size:13px;line-height:1.6;
+  color:rgba(247,243,236,0.7);max-width:340px;
+}
+.footer-col-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(247,243,236,0.5);margin-bottom:14px;
+}
+.footer-col a{
+  display:block;font-family:var(--sans);font-size:13px;
+  color:rgba(247,243,236,0.85);text-decoration:none;
+  padding:5px 0;transition:color 0.15s;
+}
+.footer-col a:hover{color:var(--paper)}
+.footer-bottom{
+  padding-top:24px;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(247,243,236,0.4);
+}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:780px){
+  .topstrip-inner{flex-direction:column;align-items:flex-start;gap:14px;padding:0 20px}
+  .nav{font-size:12px;gap:0}
+  .nav a{padding:6px 10px;font-size:12px}
+  .hero,.section,.crumb{padding-left:20px;padding-right:20px}
+  .hero h1{font-size:32px}
+  .modal-body{padding:32px 24px}
+  .modal-title{font-size:30px}
+  .sector-header,.sector-row{grid-template-columns:1.8fr 1fr 1.5fr;font-size:13px}
+  .sector-header > div:nth-child(3),.sector-row > div:nth-child(3){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP STRIP ============ -->
+<header class="topstrip">
+  <div class="topstrip-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">NCLT Tracker</span>
+      <span class="brand-tag">Public dashboard</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="process-flow.html">Process Flow</a>
+      <a href="benches.html" class="active">Benches</a>
+      <a href="costs.html">Costs</a>
+      <a href="index.html#research">Research</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <div class="timestamp">Data as of <span data-key="_meta.data_as_of">31 Mar 2026</span></div>
+  </div>
+</header>
+
+<!-- ============ BREADCRUMB ============ -->
+<div class="crumb">
+  <a href="index.html">Dashboard</a><span class="crumb-sep">/</span>Benches
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-tag">Sixteen benches · One adjudicating authority</div>
+  <h1>Where insolvency law <em>actually meets the system.</em></h1>
+  <p class="hero-lede">
+    The Insolvency and Bankruptcy Code is adjudicated by sixteen benches of the National Company Law Tribunal, spread across India. Each has its own jurisdiction, its own member composition, and — though IBBI does not publish bench-level disposal data — its own reputation for backlog, sectoral specialisation, and procedural culture. This page maps what is publicly known about each bench, and is honest about what is not.
+  </p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Coverage</div>
+      <div class="hero-meta-value">16 benches · All NCLT jurisdiction</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Bench data</div>
+      <div class="hero-meta-value"><a href="https://nclt.gov.in/national-company-law-tribunal-benches" target="_blank" rel="noopener">NCLT.gov.in</a> · Parliament replies</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Sectoral data</div>
+      <div class="hero-meta-value"><a href="https://ibbi.gov.in/" target="_blank" rel="noopener">IBBI quarterly</a> · MCA Annexures</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Last verified</div>
+      <div class="hero-meta-value">22 May 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 1: HEADLINE STATS ============ -->
+<section class="section" id="overview">
+  <div class="section-mark">§01 — Bench landscape</div>
+  <h2>The institution at a glance.</h2>
+  <p class="section-intro">
+    Cases are filed before the bench that has jurisdiction over the state where the company's registered office sits. The tribunal has grown from eleven benches in 2016 to sixteen today, with members appointed in tranches and current strength running below sanction.
+  </p>
+
+  <div class="headline-strip">
+    <div class="headline-stat">
+      <div class="headline-stat-label">Benches in operation</div>
+      <div class="headline-stat-value" data-key="benches.total_benches">16</div>
+      <div class="headline-stat-note">1 Principal + 15 regional · <a href="https://nclt.gov.in/national-company-law-tribunal" target="_blank" rel="noopener">NCLT.gov.in</a></div>
+    </div>
+    <div class="headline-stat">
+      <div class="headline-stat-label">Members (current / sanctioned)</div>
+      <div class="headline-stat-value"><span data-key="benches.members_current">54</span> / <span data-key="benches.members_sanctioned">63</span></div>
+      <div class="headline-stat-note"><span data-key="benches.members_vacant">9</span> vacancies as of 29 Apr 2026 SC order</div>
+    </div>
+    <div class="headline-stat">
+      <div class="headline-stat-label">Total pendency</div>
+      <div class="headline-stat-value" data-key="pendency.total_nclt_all_matters.value">14,961</div>
+      <div class="headline-stat-note">All matters · 31 Mar 2025 · <a href="https://taxguru.in/company-law/nclt-backlog-persists-nearly-15000-cases-pending-march-2025.html" target="_blank" rel="noopener">LS Q.3677</a></div>
+    </div>
+    <div class="headline-stat">
+      <div class="headline-stat-label">Years to clear backlog</div>
+      <div class="headline-stat-value">~<span data-key="pendency.years_to_clear_at_current_rate.value">10</span></div>
+      <div class="headline-stat-note">At current disposal · <a href="https://www.business-standard.com/budget/news/insolvency-tribunals-may-take-a-decade-to-clear-pending-cases-eco-survey-126012901663_1.html" target="_blank" rel="noopener">Economic Survey 2025–26</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: BENCH GRID ============ -->
+<section class="section" id="benches">
+  <div class="section-mark">§02 — The benches</div>
+  <h2>Click any bench to see what is publicly known.</h2>
+  <p class="section-intro">
+    For each bench: jurisdictional states, year established, number of courts and members where known, notable cases, and — explicitly — the data IBBI and the NCLT do not publish at bench level. This is the honest baseline; bench-level metrics will be added as Parliament replies and RTI responses come in.
+  </p>
+
+  <div class="grid-meta">
+    <div class="grid-meta-left">Tap a card · 16 records</div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot principal"></span>Principal bench</div>
+      <div class="legend-item"><span class="legend-dot regional"></span>Regional (2016)</div>
+      <div class="legend-item"><span class="legend-dot newer"></span>Newer benches</div>
+    </div>
+  </div>
+
+  <div class="bench-grid" id="bench-grid">
+    <!-- Cards injected by JS -->
+  </div>
+</section>
+
+<!-- ============ SECTION 3: SECTORAL ============ -->
+<section class="section" id="sectoral">
+  <div class="section-mark">§03 — Sectoral picture</div>
+  <h2>What the cases are <em>actually about.</em></h2>
+  <p class="section-intro">
+    The IBBI does not publish a bench-by-sector cross-tabulation. What it does publish is an all-India sectoral breakdown of ongoing CIRPs and liquidations, updated through Parliament replies and quarterly newsletters. Two sectors dominate: manufacturing and real estate.
+  </p>
+
+  <div class="sector-intro-grid">
+    <div>
+      <p class="sector-note" style="margin-top:0">
+        Of the 1,926 ongoing CIRPs reported by the Ministry of Corporate Affairs as of 31 March 2025, <strong>manufacturing accounts for 28%</strong> and <strong>real estate (including renting & business activities) for 26%</strong>. Together, two sectors carry over half the active pipeline. The liquidation pipeline is similar in shape: manufacturing 38%, real estate 18%.
+      </p>
+    </div>
+    <div class="sector-callout">
+      <div class="sector-callout-label">The IBBI footnote</div>
+      <div class="sector-callout-text">
+        Sectoral data is published <strong>all-India only</strong>. A real-estate CIRP at NCLT Mumbai is not separately counted from one at NCLT Allahabad in any public source. Bench × sector cross-tabs would have to be reconstructed case-by-case from order PDFs.
+      </div>
+    </div>
+  </div>
+
+  <div class="sector-tab-row">
+    <button class="sector-tab active" data-pane="cirp">Ongoing CIRP · 1,926 cases</button>
+    <button class="sector-tab" data-pane="liq">Ongoing Liquidation · 1,384 cases</button>
+  </div>
+
+  <div class="sector-pane active" id="pane-cirp">
+    <div class="sector-table-wrap">
+      <div class="sector-header">
+        <div>Sector</div>
+        <div>Cases</div>
+        <div>Share</div>
+        <div></div>
+      </div>
+      <div id="rows-cirp"></div>
+    </div>
+  </div>
+
+  <div class="sector-pane" id="pane-liq">
+    <div class="sector-table-wrap">
+      <div class="sector-header">
+        <div>Sector</div>
+        <div>Cases</div>
+        <div>Share</div>
+        <div></div>
+      </div>
+      <div id="rows-liq"></div>
+    </div>
+  </div>
+
+  <p class="sector-note">
+    Source: Ministry of Corporate Affairs, <a href="https://taxguru.in/company-law/nclt-backlog-persists-nearly-15000-cases-pending-march-2025.html" target="_blank" rel="noopener">Lok Sabha Unstarred Question No. 3677</a>, answered 11 August 2025 (data as on 31 March 2025). The IBBI uses a slightly different sectoral taxonomy in its quarterly newsletters; the figures here are MCA's own classification as placed before Parliament. Cumulative (closed + ongoing) sectoral breakdowns are available in the <a href="https://ibbi.gov.in/" target="_blank" rel="noopener">IBBI Jul–Sep 2025 newsletter</a>.
+  </p>
+
+  <div class="variance-card">
+    <div class="variance-label">Variance across sources</div>
+    <div class="sector-callout-text" style="margin-bottom:12px">
+      Sectoral classification is not standardised across publishers. The same case can land in different buckets depending on whose taxonomy is in use. Three reported figures for the real-estate share of admitted cases:
+    </div>
+    <div class="variance-grid">
+      <div>
+        <div class="variance-item-source">MCA · Mar 2025</div>
+        <div class="variance-item-stat">26% of ongoing CIRPs<br><span style="font-family:var(--mono);font-size:11px;color:var(--ink-muted)">"Real Estate, Renting & Business Activities"</span></div>
+      </div>
+      <div>
+        <div class="variance-item-source">Lexology · Dec 2024</div>
+        <div class="variance-item-stat">~22% of admitted cases<br><span style="font-family:var(--mono);font-size:11px;color:var(--ink-muted)">Cumulative real-estate-only</span></div>
+      </div>
+      <div>
+        <div class="variance-item-source">IIIPI Research · Oct 2025</div>
+        <div class="variance-item-stat">15% of resolved · 18% of liquidated<br><span style="font-family:var(--mono);font-size:11px;color:var(--ink-muted)">Resolution/liquidation outcomes</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: WHAT'S MISSING ============ -->
+<section class="section" id="gap">
+  <div class="section-mark">§04 — The data we cannot show</div>
+  <h2>What no public source currently publishes.</h2>
+  <p class="section-intro">
+    A bench-by-bench performance table — admissions per quarter, average days from filing to admission, average days from admission to disposal, sectoral share by bench — would be the single most useful artefact for the IBC research community. None of it is published anywhere in the public domain. Where it has surfaced, it has been through Parliament replies, RTI responses, or empirical research extracting data from order PDFs.
+  </p>
+
+  <div class="sector-intro-grid">
+    <div>
+      <div class="modal-section">
+        <div class="modal-section-label">Not in IBBI newsletters</div>
+        <div class="modal-section-body">
+          <ul>
+            <li>Bench-wise CIRP admissions per quarter</li>
+            <li>Bench-wise CIRP disposal per quarter</li>
+            <li>Bench-wise plan-approval delay</li>
+            <li>Bench-wise sectoral composition</li>
+            <li>Bench-wise CoC-vote-to-NCLT-order gap</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="modal-section">
+        <div class="modal-section-label">Where it does appear</div>
+        <div class="modal-section-body">
+          <ul>
+            <li>Lok Sabha questions (aggregate pendency, occasional bench breakdown)</li>
+            <li>Standing Committee on Finance reports (32nd Report 2020–21)</li>
+            <li>DAKSH <em>State of Tribunals</em> series</li>
+            <li>Vidhi Centre empirical studies (order-PDF scraping)</li>
+            <li>IIM-A and academic studies (one-off)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-gap" style="margin-top:24px">
+    <div class="modal-gap-label">Why this matters</div>
+    The Supreme Court's <em>suo motu</em> cognisance on 29 April 2026 cited 383 pending plan-approval matters and the "grim and dismal" state of NCLT capacity, but the order did not break those 383 down by bench. Until that disaggregation is published — either by IBBI in its newsletters or by MCA in answer to Parliament — public-interest analysis of bench-level performance has to be reconstructed from primary records.
+  </div>
+</section>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+    <div class="modal-body" id="modal-body">
+      <!-- Injected -->
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-mark">NCLT Tracker</div>
+        <p class="footer-blurb">
+          An independent public dashboard tracking the operational performance of India's National Company Law Tribunal. Built on publicly available data from the IBBI, NCLT, and judicial sources. Open data, open methodology.
+        </p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Explore</div>
+        <a href="process-flow.html">Process flow</a>
+        <a href="benches.html">Bench grid</a>
+        <a href="costs.html">Costs &amp; Consequences</a>
+        <a href="index.html#research">Research hub</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Data</div>
+        <a href="#">Methodology</a>
+        <a href="#">Source archive</a>
+        <a href="#">Download CSVs</a>
+        <a href="#">Report an error</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">About</div>
+        <a href="#">Project</a>
+        <a href="#">Partners</a>
+        <a href="#">Contact</a>
+        <a href="#">License (CC BY)</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>NCLT Tracker · v0.3 MVP · Last build 22 May 2026</div>
+      <div>In partnership with [Law Firm] · DAKSH · pro bono</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============ BENCH DATA ============
+const BENCHES = [
+  {
+    id:'delhi-principal',type:'principal',
+    name:'New Delhi (Principal)',
+    location:'CGO Complex, Lodhi Road',
+    jurisdiction:'Delhi, Haryana (selected districts), Union Territories without their own bench',
+    states:['Delhi','UTs (residual)'],
+    established:'1 June 2016',
+    courts:6, role:'Principal Bench under §419, Companies Act 2013',
+    composition:'President + Judicial & Technical Members. Hosts Principal Bench responsible for transfer petitions, allocation, and policy directions.',
+    notable:[
+      {name:'Jaypee Infratech',note:'Suraksha Group resolution plan approved Mar 2023; homebuyer grievances continue under Principal Bench monitoring',link:'https://www.business-standard.com/topic/nclt'},
+      {name:'Reliance Capital',note:'Hinduja Group acquisition; multiple Principal Bench orders on approvals timeline',link:'https://www.business-standard.com/topic/nclt'},
+      {name:'Byju\'s (Think & Learn)',note:'BCCI settlement matters; transferred between Bengaluru and Principal benches',link:'https://www.business-standard.com/topic/nclt'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'6'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'delhi',type:'regional',
+    name:'New Delhi',
+    location:'Block-3, CGO Complex',
+    jurisdiction:'Delhi (matters not assigned to Principal), Haryana',
+    states:['Delhi','Haryana'],
+    established:'1 June 2016',
+    courts:5,
+    composition:'Five courts including specialised IBC and Companies Act benches. Court Nos. II, III, IV most active for IBC matters.',
+    notable:[
+      {name:'JC World Hospitality',note:'NCLAT revived Section 29A application before Delhi bench (Jan 2026)',link:'https://www.business-standard.com/topic/nclt-cases'},
+      {name:'Ashneer Grover v BharatPe',note:'Withdrew oppression & mismanagement plea after Sep 2024 settlement',link:'https://www.business-standard.com/topic/nclt-cases'},
+      {name:'Logix Infrastructure',note:'Tribunal directed SFIO probe citing malicious filing',link:'https://www.business-standard.com/topic/nclt-cases'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'5'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'mumbai',type:'regional',
+    name:'Mumbai',
+    location:'MTNL Building, Bandra Kurla Complex',
+    jurisdiction:'Maharashtra, Goa, Dadra & Nagar Haveli, Daman & Diu',
+    states:['Maharashtra','Goa'],
+    established:'1 June 2016',
+    courts:6,
+    composition:'Largest regional bench by court count and case volume. Six courts; widely reported as the most backlogged bench in the system.',
+    notable:[
+      {name:'Videocon Industries (Group)',note:'Resolution plan set aside by NCLAT; remand and re-CIRP',link:'https://ibbi.gov.in/'},
+      {name:'Rolta India',note:'Rs 900 cr plan approved Dec 2025; challenged by DoT for 0.06% recovery on statutory dues',link:'https://www.business-standard.com/topic/nclt'},
+      {name:'Jet Airways',note:'Admitted 2019; ordered into liquidation 2025 after 1,000+ days; ~27% creditor recovery',link:'https://anirudhassociates.com/nclt-backlogs-in-india/'},
+      {name:'Dilip Chhabria Design',note:'Liquidation track; multi-year IA history visible in IBBI claim records',link:'https://ibbi.gov.in/'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'6'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'kolkata',type:'regional',
+    name:'Kolkata',
+    location:'5 Esplanade Row West',
+    jurisdiction:'West Bengal, Bihar, Jharkhand, Odisha (residual), Sikkim, A&N Islands',
+    states:['West Bengal','Bihar','Jharkhand','Sikkim'],
+    established:'1 June 2016',
+    courts:2,
+    composition:'Two courts; large Eastern jurisdiction, including industrial belts of Jharkhand and Bihar.',
+    notable:[
+      {name:'Simplex Infrastructures',note:'Multiple petitions across creditors; dismissed and admitted at different points',link:'https://ibbi.gov.in/'},
+      {name:'V Hotels',note:'Bombay HC quashed pre-CIRP tax notices after plan approval (Nov 2025)',link:'https://www.ibbi.gov.in/media/media-coverage?page=11'},
+      {name:'Mittal Corp',note:'Merger into Shyam Metalics subsidiary approved',link:'https://ibbi.gov.in/'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'2'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'chennai',type:'regional',
+    name:'Chennai',
+    location:'Corporate Bhawan, Egmore',
+    jurisdiction:'Tamil Nadu, Kerala (limited), Puducherry, Lakshadweep',
+    states:['Tamil Nadu','Puducherry'],
+    established:'1 June 2016',
+    courts:2,
+    composition:'Two courts. Shared jurisdiction with the newer Kochi bench for Kerala matters.',
+    notable:[
+      {name:'Café Coffee Day (parent)',note:'NCLAT Chennai terminated CIRP after settlement (Sep 2023)',link:'https://ibbi.gov.in/'},
+      {name:'SKS Power',note:'Sarda Energy resolution plan approved (Aug 2024)',link:'https://ibbi.gov.in/'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'2'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'bengaluru',type:'regional',
+    name:'Bengaluru',
+    location:'Bengaluru',
+    jurisdiction:'Karnataka',
+    states:['Karnataka'],
+    established:'1 June 2016',
+    courts:2,
+    composition:'Two courts. Concentration of tech-sector CIRPs given Karnataka\'s industry base.',
+    notable:[
+      {name:'Byju\'s (Think & Learn)',note:'Multiple proceedings; transferred between Bengaluru and Delhi benches',link:'https://www.business-standard.com/topic/nclt-cases'},
+      {name:'Gensol Engineering',note:'High-profile recent CIRP filings',link:'https://cracktarget.com/2025/06/17/national-company-law-tribunal-nclt/'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'2'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'ahmedabad',type:'regional',
+    name:'Ahmedabad',
+    location:'Ahmedabad',
+    jurisdiction:'Gujarat',
+    states:['Gujarat'],
+    established:'1 June 2016',
+    courts:2,
+    composition:'Two courts. Active in MSME and chemicals-sector CIRPs.',
+    notable:[
+      {name:'Jay Formulations',note:'Resolution plan approved May 2025',link:'https://ibbi.gov.in/'},
+      {name:'Gajanand Corporation',note:'Plan approved May 2025',link:'https://ibbi.gov.in/'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'2'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'hyderabad',type:'regional',
+    name:'Hyderabad',
+    location:'Hyderabad',
+    jurisdiction:'Telangana, Andhra Pradesh (residual)',
+    states:['Telangana','Andhra Pradesh'],
+    established:'1 June 2016',
+    courts:3,
+    composition:'Three courts. Shares Andhra Pradesh jurisdiction with the newer Amaravati bench.',
+    notable:[
+      {name:'Innoventive Industries',note:'Cited Supreme Court precedent on Hyderabad bench CIRP admission',link:'https://indiankanoon.org/search/?formInput=nclt+doctypes:judgments'},
+      {name:'Feno Plast',note:'Resolution plan approved Feb 2025',link:'https://ibbi.gov.in/'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'3'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'allahabad',type:'regional',
+    name:'Allahabad (Prayagraj)',
+    location:'Prayagraj',
+    jurisdiction:'Uttar Pradesh, Uttarakhand',
+    states:['Uttar Pradesh','Uttarakhand'],
+    established:'1 June 2016',
+    courts:1,
+    composition:'Single court for the most populous state. Workload concentration is a recurring concern.',
+    notable:[
+      {name:'Supertech',note:'Multi-tranche real-estate insolvency; NCLAT stays and revival applications',link:'https://www.ibbi.gov.in/media/media-coverage?page=66'},
+      {name:'Asset transfer cases',note:'NCLT Allahabad on illegality of post-CIRP asset transfers even with lender NoC (Nov 2025)',link:'https://www.ibbi.gov.in/media/media-coverage?page=11'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'chandigarh',type:'regional',
+    name:'Chandigarh',
+    location:'Chandigarh',
+    jurisdiction:'Punjab, Haryana (shared), Himachal Pradesh, J&K, Ladakh',
+    states:['Punjab','HP','J&K','Ladakh'],
+    established:'1 June 2016',
+    courts:1,
+    composition:'Single court covering five northern jurisdictions plus shared coverage with Delhi for Haryana.',
+    notable:[],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'guwahati',type:'regional',
+    name:'Guwahati',
+    location:'Guwahati',
+    jurisdiction:'Assam, Meghalaya, Manipur, Nagaland, Tripura, Mizoram, Arunachal Pradesh',
+    states:['7 North-Eastern states'],
+    established:'1 June 2016',
+    courts:1,
+    composition:'Single court covering all seven North-Eastern states. Lowest case-load nationally.',
+    notable:[],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2016'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'jaipur',type:'newer',
+    name:'Jaipur',
+    location:'Jaipur',
+    jurisdiction:'Rajasthan',
+    states:['Rajasthan'],
+    established:'2019',
+    courts:1,
+    composition:'Single court added in the second phase of bench expansion.',
+    notable:[],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2019'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'cuttack',type:'newer',
+    name:'Cuttack',
+    location:'Cuttack',
+    jurisdiction:'Odisha',
+    states:['Odisha'],
+    established:'2019',
+    courts:1,
+    composition:'Single court added to relieve Kolkata\'s eastern caseload.',
+    notable:[],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2019'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'kochi',type:'newer',
+    name:'Kochi',
+    location:'Kochi',
+    jurisdiction:'Kerala',
+    states:['Kerala'],
+    established:'2019',
+    courts:1,
+    composition:'Single court relieving Chennai\'s southern caseload.',
+    notable:[
+      {name:'Section 7 ruling (Nov 2025)',note:'Held that insolvency cannot be initiated against guarantor without first invoking guarantee',link:'https://www.ibbi.gov.in/media/media-coverage?page=11'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2019'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'amaravati',type:'newer',
+    name:'Amaravati',
+    location:'Amaravati',
+    jurisdiction:'Andhra Pradesh',
+    states:['Andhra Pradesh'],
+    established:'2022',
+    courts:1,
+    composition:'Reported as a single-member bench. Separated AP matters from Hyderabad.',
+    notable:[],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2022'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  },
+  {
+    id:'indore',type:'newer',
+    name:'Indore',
+    location:'Indore',
+    jurisdiction:'Madhya Pradesh, Chhattisgarh',
+    states:['MP','Chhattisgarh'],
+    established:'2022',
+    courts:1,
+    composition:'Most recent bench. Single court covering MP and Chhattisgarh.',
+    notable:[
+      {name:'Provident Fund order',note:'Restricted RPF Commissioner action during moratorium (Sep 2023)',link:'https://www.ibbi.gov.in/media/media-coverage?page=136'}
+    ],
+    measured:[
+      {label:'Court rooms',value:'1'},
+      {label:'Established',value:'2022'},
+      {label:'Pendency (bench-level)',unknown:true}
+    ]
+  }
+];
+
+// ============ SECTORAL DATA ============
+// Now sourced from data.json via the data-loader.
+// Fallback values are kept inline in case data.json fails to load.
+const SECTOR_CIRP_FALLBACK = [
+  {sector:'Manufacturing',cases:538},
+  {sector:'Real Estate, Renting & Business Activities',cases:510},
+  {sector:'Construction',cases:288},
+  {sector:'Others',cases:266},
+  {sector:'Wholesale & Retail Trade',cases:196},
+  {sector:'Transport, Storage & Communications',cases:56},
+  {sector:'Electricity & Others',cases:38},
+  {sector:'Hotels & Restaurants',cases:34}
+];
+const SECTOR_LIQ_FALLBACK = [
+  {sector:'Manufacturing',cases:522},
+  {sector:'Real Estate, Renting & Business Activities',cases:247},
+  {sector:'Others',cases:179},
+  {sector:'Wholesale & Retail Trade',cases:168},
+  {sector:'Construction',cases:147},
+  {sector:'Transport, Storage & Communications',cases:52},
+  {sector:'Electricity & Others',cases:44},
+  {sector:'Hotels & Restaurants',cases:25}
+];
+
+// ============ RENDER BENCH GRID ============
+function renderGrid(){
+  const grid = document.getElementById('bench-grid');
+  grid.innerHTML = BENCHES.map(b=>{
+    const typeLabel = b.type==='principal'?'Principal Bench': b.type==='regional'?'Regional · 2016':'Newer · '+b.established;
+    return `
+      <div class="bench-card" data-id="${b.id}">
+        <div class="bench-card-header">
+          <div>
+            <div class="bench-name">${b.name}</div>
+          </div>
+          <div class="bench-type-dot ${b.type}" title="${typeLabel}"></div>
+        </div>
+        <div class="bench-type-label">${typeLabel}</div>
+        <div class="bench-jurisd">${b.jurisdiction}</div>
+        <div class="bench-card-footer">
+          <div class="bench-courts"><strong>${b.courts}</strong>${b.courts===1?'court':'courts'}</div>
+          <div class="bench-explore">Open</div>
+        </div>
+      </div>`;
+  }).join('');
+  grid.querySelectorAll('.bench-card').forEach(card=>{
+    card.addEventListener('click',()=>openModal(card.dataset.id));
+  });
+}
+
+// ============ RENDER MODAL ============
+function openModal(id){
+  const b = BENCHES.find(x=>x.id===id);
+  if(!b) return;
+  const body = document.getElementById('modal-body');
+  const typeLabel = b.type==='principal'?'Principal Bench': b.type==='regional'?'Regional · Established 2016':'Newer bench · Established '+b.established;
+
+  const statRow = b.measured.map(s=>`
+    <div class="modal-stat">
+      <div class="modal-stat-label">${s.label}</div>
+      <div class="modal-stat-value ${s.unknown?'unknown':''}">${s.unknown?'Not published':s.value}</div>
+    </div>
+  `).join('');
+
+  const notable = b.notable.length ? `
+    <div class="modal-section">
+      <div class="modal-section-label">Notable & Recent Cases</div>
+      <div class="modal-section-body">
+        <ul>
+          ${b.notable.map(c=>`<li><strong>${c.name}</strong> — ${c.note}${c.link?` <a href="${c.link}" target="_blank" rel="noopener">→</a>`:''}</li>`).join('')}
+        </ul>
+      </div>
+    </div>` : `
+    <div class="modal-section">
+      <div class="modal-section-label">Notable & Recent Cases</div>
+      <div class="modal-section-body" style="font-style:italic">Specific high-profile IBC matters at this bench have not been systematically catalogued in our source base. Contribution welcome via the "Report an error" footer link.</div>
+    </div>`;
+
+  body.innerHTML = `
+    <div class="modal-tag">${typeLabel}</div>
+    <h3 class="modal-title">${b.name}</h3>
+    <div class="modal-subtitle">${b.jurisdiction}</div>
+
+    <div class="modal-stat-row">
+      ${statRow}
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Composition</div>
+      <div class="modal-section-body">${b.composition}</div>
+    </div>
+
+    ${notable}
+
+    <div class="modal-section">
+      <div class="modal-section-label">What we don't have for this bench</div>
+      <div class="modal-gap">
+        <div class="modal-gap-label">Not published anywhere public</div>
+        Bench-level pendency figures, admissions per quarter, average days from admission to plan approval, and sectoral breakdown of admitted cases. Total NCLT pendency is published as an all-India number (14,961 cases as of 31 Mar 2025), but never disaggregated by bench in IBBI newsletters or in standard Lok Sabha replies on this topic.
+      </div>
+    </div>
+
+    <div class="modal-sources">
+      Sources for this bench: <a href="https://nclt.gov.in/national-company-law-tribunal-benches" target="_blank" rel="noopener">NCLT.gov.in</a> · <a href="https://ibbi.gov.in/" target="_blank" rel="noopener">IBBI order records</a> · public case reports
+    </div>
+  `;
+  document.getElementById('modal-bg').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ============ RENDER SECTORAL TABLES ============
+function renderSectorTable(data, target){
+  const total = data.reduce((s,r)=>s+r.cases,0);
+  const max = Math.max(...data.map(r=>r.cases));
+  const colorClass = target==='rows-cirp' ? 'cirp' : 'liq';
+  const rows = data.map(r=>{
+    const pct = (r.cases/total*100).toFixed(1);
+    const w = (r.cases/max*100).toFixed(1);
+    return `
+      <div class="sector-row">
+        <div class="sector-name">${r.sector}</div>
+        <div class="sector-value">${r.cases.toLocaleString('en-IN')}</div>
+        <div class="sector-bar-wrap">
+          <div class="sector-bar"><div class="sector-bar-fill ${colorClass}" style="width:${w}%"></div></div>
+        </div>
+        <div class="sector-bar-pct" style="text-align:right">${pct}%</div>
+      </div>
+    `;
+  }).join('');
+  const totalRow = `
+    <div class="sector-row total">
+      <div class="sector-name">Total</div>
+      <div class="sector-value">${total.toLocaleString('en-IN')}</div>
+      <div></div>
+      <div class="sector-bar-pct" style="text-align:right">100%</div>
+    </div>`;
+  document.getElementById(target).innerHTML = rows + totalRow;
+}
+
+// Sectoral tables register with the data loader so they get the live data.
+window.NCLTTracker = window.NCLTTracker || { renderers: [] };
+window.NCLTTracker.renderers.push(function(data){
+  const cirp = (data && data.sectoral_cirp && data.sectoral_cirp.categories) || SECTOR_CIRP_FALLBACK;
+  const liq  = (data && data.sectoral_liquidation && data.sectoral_liquidation.categories) || SECTOR_LIQ_FALLBACK;
+  renderSectorTable(cirp,'rows-cirp');
+  renderSectorTable(liq,'rows-liq');
+});
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded',()=>{
+  renderGrid();
+  // Sectoral tables are rendered by the NCLTTracker.renderers hook above
+  // — they fire once data.json loads (or immediately if it fails to load).
+
+  // Modal close handlers
+  document.getElementById('modal-close').addEventListener('click',closeModal);
+  document.getElementById('modal-bg').addEventListener('click',e=>{
+    if(e.target.id==='modal-bg') closeModal();
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape') closeModal();
+  });
+
+  // Sector tab handlers
+  document.querySelectorAll('.sector-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const pane = tab.dataset.pane;
+      document.querySelectorAll('.sector-tab').forEach(t=>t.classList.toggle('active',t===tab));
+      document.querySelectorAll('.sector-pane').forEach(p=>{
+        p.classList.toggle('active',p.id==='pane-'+pane);
+      });
+    });
+  });
+});
+</script>
+
+<script src="data-loader.js"></script>
+
+</body>
+</html>
