@@ -1,0 +1,459 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "dashboard_version": "v0.4 MVP",
+    "data_as_of": "31 Mar 2026",
+    "last_build": "22 May 2026",
+    "next_refresh": "30 Jul 2026",
+    "refresh_cadence": "Quarterly",
+    "update_notes": "Update this file when IBBI publishes a new quarterly newsletter (typically 7 weeks after quarter-end), or when Parliament/Supreme Court releases fresh aggregate data. Every page reads from this file — change a value once, it propagates everywhere."
+  },
+
+  "headline": {
+    "cases_admitted": {
+      "value": "8,659",
+      "value_numeric": 8659,
+      "label_main": "Cases admitted",
+      "label_sub": "cumulative",
+      "delta_text": "▴ 1,044 this quarter",
+      "delta_direction": "up",
+      "as_of": "30 Sep 2025",
+      "source": "IBBI Jul–Sep 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/"
+    },
+    "resolved_by_plan": {
+      "value": "1,300",
+      "value_numeric": 1300,
+      "label_main": "Resolved by plan",
+      "label_sub": "cumulative",
+      "delta_text": "▴ 288 in FY 24–25",
+      "delta_direction": "up",
+      "as_of": "30 Sep 2025",
+      "source": "IBBI Jul–Sep 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/"
+    },
+    "currently_pending_cirp": {
+      "value": "1,898",
+      "value_numeric": 1898,
+      "label_main": "Currently pending",
+      "label_sub": "CIRP",
+      "delta_text": "— vs 1,856 last quarter",
+      "delta_direction": "neutral",
+      "as_of": "30 Sep 2025",
+      "source": "IBBI Jul–Sep 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/"
+    },
+    "avg_time_to_resolve": {
+      "value": "597",
+      "value_numeric": 597,
+      "label_main": "Avg time to",
+      "label_sub": "resolve (days)",
+      "delta_text": "▾ 267 days over statutory 330",
+      "delta_direction": "down",
+      "as_of": "31 Mar 2025",
+      "source": "IBBI Jan–Mar 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/uploads/whatsnew/912e97d4d9f96651386541fb7059203b.pdf",
+      "variance_note": "IBBI Jul–Sep 2025 newsletter reports 725 days; DAKSH State of Tribunals 2025 cites 752 days. We use the most recent IBBI headline figure."
+    },
+    "total_recovery": {
+      "value": "₹4.29",
+      "value_unit": "L Cr",
+      "value_numeric": 4.29,
+      "label_main": "Total recovery",
+      "label_sub": "under IBC",
+      "delta_text": "▴ ₹0.41 L Cr this quarter",
+      "delta_direction": "up",
+      "as_of": "30 Sep 2025",
+      "source": "IBBI Jul–Sep 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/"
+    },
+    "members_position_sanctioned": {
+      "value": "54",
+      "value_unit": "/63",
+      "value_numeric": 54,
+      "sanctioned_numeric": 63,
+      "label_main": "Members in position",
+      "label_sub": "vs sanctioned",
+      "delta_text": "▾ 9 vacancies (SC, 29 Apr)",
+      "delta_direction": "down",
+      "as_of": "29 Apr 2026",
+      "source": "Supreme Court suo motu order",
+      "source_url": "#"
+    }
+  },
+
+  "outcomes": {
+    "as_of": "31 Mar 2025",
+    "source": "IBBI Jan–Mar 2025 Newsletter",
+    "source_url": "https://ibbi.gov.in/uploads/whatsnew/912e97d4d9f96651386541fb7059203b.pdf",
+    "total_admitted": 8659,
+    "categories": [
+      {
+        "key": "resolved",
+        "label": "Resolved by plan",
+        "count": 1300,
+        "pct": 15,
+        "section_ref": null
+      },
+      {
+        "key": "liquidated",
+        "label": "Liquidated",
+        "count": 2758,
+        "pct": 32,
+        "section_ref": null
+      },
+      {
+        "key": "withdrawn",
+        "label": "Withdrawn (§12A)",
+        "count": 1154,
+        "pct": 13,
+        "section_ref": "§12A"
+      },
+      {
+        "key": "appeal",
+        "label": "Appeal / review / settled",
+        "count": 1236,
+        "pct": 14,
+        "section_ref": null
+      },
+      {
+        "key": "ongoing",
+        "label": "Ongoing",
+        "count": 1898,
+        "pct": 22,
+        "section_ref": null
+      }
+    ]
+  },
+
+  "process_durations": {
+    "statutory_cirp_days": {
+      "value": 180,
+      "source": "IBC §12, 2016",
+      "note": "Original statutory limit; codified, not subject to change without amendment"
+    },
+    "statutory_outer_cap_days": {
+      "value": 330,
+      "source": "IBC §12 (post-amendment), 2019",
+      "note": "Outer cap including extension and litigation buffer"
+    },
+    "statutory_admission_days": {
+      "value": 14,
+      "source": "IBC §7(4), §9(5), §10(4)",
+      "note": "Admission/rejection window"
+    },
+    "actual_cirp_days_mar25": {
+      "value": 597,
+      "source": "IBBI Jan–Mar 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/uploads/whatsnew/912e97d4d9f96651386541fb7059203b.pdf"
+    },
+    "actual_cirp_days_sep25": {
+      "value": 725,
+      "source": "IBBI Jul–Sep 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/"
+    },
+    "actual_cirp_days_daksh": {
+      "value": 752,
+      "source": "DAKSH State of Tribunals 2025",
+      "source_url": "https://www.dakshindia.org/wp-content/uploads/2025/09/State-of-Tribunals-PDF-Digital.pdf"
+    },
+    "fy25_avg_days": {
+      "value": 853,
+      "source": "Economic Survey 2025–26",
+      "source_url": "https://www.business-standard.com/budget/news/insolvency-tribunals-may-take-a-decade-to-clear-pending-cases-eco-survey-126012901663_1.html"
+    },
+    "plan_approval_delay_max": {
+      "value": 738,
+      "source": "Supreme Court suo motu order, 29 Apr 2026"
+    },
+    "liquidation_admission_to_order_days": {
+      "value": 508,
+      "source": "IBBI Jan–Mar 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/uploads/whatsnew/912e97d4d9f96651386541fb7059203b.pdf"
+    },
+    "liquidation_order_to_final_days": {
+      "value": 646,
+      "source": "IBBI Jan–Mar 2025 Newsletter",
+      "source_url": "https://ibbi.gov.in/uploads/whatsnew/912e97d4d9f96651386541fb7059203b.pdf"
+    },
+    "ciirp_target_days": {
+      "value": 150,
+      "source": "IBC (Amendment) Act 2026, Chapter IV-A"
+    },
+    "amendment_plan_approval_cap_days": {
+      "value": 30,
+      "source": "IBC (Amendment) Act 2026, §31 amended"
+    }
+  },
+
+  "pendency": {
+    "total_nclt_all_matters": {
+      "value": 14961,
+      "as_of": "31 Mar 2025",
+      "source": "MCA reply to Lok Sabha Unstarred Q.3677",
+      "source_url": "https://taxguru.in/company-law/nclt-backlog-persists-nearly-15000-cases-pending-march-2025.html"
+    },
+    "total_nclt_ibc_companies": {
+      "value": 30600,
+      "as_of": "Economic Survey reference period",
+      "source": "Economic Survey 2025–26",
+      "source_url": "https://www.business-standard.com/budget/news/insolvency-tribunals-may-take-a-decade-to-clear-pending-cases-eco-survey-126012901663_1.html",
+      "note": "Survey's broader count including IBC and Companies Act matters"
+    },
+    "years_to_clear_at_current_rate": {
+      "value": 10,
+      "source": "Economic Survey 2025–26"
+    },
+    "plans_pending_sc_order": {
+      "value": 383,
+      "as_of": "29 Apr 2026",
+      "source": "Supreme Court suo motu order"
+    },
+    "year_wise": [
+      {"fy": "2016-17", "pending": 6256},
+      {"fy": "2017-18", "pending": 10426},
+      {"fy": "2018-19", "pending": 16643},
+      {"fy": "2019-20", "pending": 21532},
+      {"fy": "2020-21", "pending": 20654},
+      {"fy": "2021-22", "pending": 21312},
+      {"fy": "2022-23", "pending": 21424},
+      {"fy": "2023-24", "pending": 19793},
+      {"fy": "2024-25", "pending": 14961}
+    ]
+  },
+
+  "recovery": {
+    "haircut_pct": {
+      "value": 67,
+      "source": "IBBI Jul–Sep 2025 Newsletter"
+    },
+    "realisation_vs_claims_pct": {
+      "value": 32.8,
+      "source": "IBBI Jan–Mar 2025 Newsletter"
+    },
+    "realisation_vs_liquidation_value_pct": {
+      "value": 170,
+      "source": "IBBI Jan–Mar 2025 Newsletter"
+    },
+    "total_realised_lakh_crore": {
+      "value": 3.99,
+      "source": "IBBI Jul–Sep 2025 Newsletter"
+    }
+  },
+
+  "benches": {
+    "total_benches": 16,
+    "principal_bench": 1,
+    "regional_benches": 15,
+    "members_current": 54,
+    "members_sanctioned": 63,
+    "members_vacant": 9,
+    "judicial_members_old": 16,
+    "technical_members_old": 9,
+    "as_of": "29 Apr 2026",
+    "source": "Supreme Court suo motu order + NCLT.gov.in"
+  },
+
+  "sectoral_cirp": {
+    "as_of": "31 Mar 2025",
+    "source": "MCA reply to Lok Sabha Unstarred Q.3677",
+    "source_url": "https://taxguru.in/company-law/nclt-backlog-persists-nearly-15000-cases-pending-march-2025.html",
+    "total": 1926,
+    "categories": [
+      {"sector": "Manufacturing", "cases": 538},
+      {"sector": "Real Estate, Renting & Business Activities", "cases": 510},
+      {"sector": "Construction", "cases": 288},
+      {"sector": "Others", "cases": 266},
+      {"sector": "Wholesale & Retail Trade", "cases": 196},
+      {"sector": "Transport, Storage & Communications", "cases": 56},
+      {"sector": "Electricity & Others", "cases": 38},
+      {"sector": "Hotels & Restaurants", "cases": 34}
+    ]
+  },
+
+  "sectoral_liquidation": {
+    "as_of": "31 Mar 2025",
+    "source": "MCA reply to Lok Sabha Unstarred Q.3677",
+    "source_url": "https://taxguru.in/company-law/nclt-backlog-persists-nearly-15000-cases-pending-march-2025.html",
+    "total": 1384,
+    "categories": [
+      {"sector": "Manufacturing", "cases": 522},
+      {"sector": "Real Estate, Renting & Business Activities", "cases": 247},
+      {"sector": "Others", "cases": 179},
+      {"sector": "Wholesale & Retail Trade", "cases": 168},
+      {"sector": "Construction", "cases": 147},
+      {"sector": "Transport, Storage & Communications", "cases": 52},
+      {"sector": "Electricity & Others", "cases": 44},
+      {"sector": "Hotels & Restaurants", "cases": 25}
+    ]
+  },
+
+  "ongoing_liquidations": {
+    "as_of": "31 Jan 2025",
+    "source": "IBBI Status Note on Liquidation Process",
+    "source_url": "https://ibbi.gov.in/uploads/meetings/2025-07-04-154141-5v8in-cf31bb039b6d0f2d21d47446b9cfd6ba.pdf",
+    "total": 1436,
+    "ageing": [
+      {"bucket": "> 2 years", "count": 824, "pct": 57},
+      {"bucket": "1 to 2 years", "count": 318, "pct": 22},
+      {"bucket": "270 days to 1 year", "count": 80, "pct": 5.6},
+      {"bucket": "180 to 270 days", "count": 69, "pct": 4.8},
+      {"bucket": "90 to 180 days", "count": 77, "pct": 5.4},
+      {"bucket": "< 90 days", "count": 68, "pct": 4.7}
+    ]
+  },
+
+  "costs": {
+    "capital_locked_up": {
+      "value": "₹24.72",
+      "unit": "lakh crore",
+      "value_numeric": 24.72,
+      "pct_of_gdp": 7.48,
+      "scope": "All commercial tribunals (NCLT + NCLAT + 8 others)",
+      "as_of": "Sep 2025",
+      "source": "DAKSH State of Tribunals Report 2025",
+      "source_url": "https://www.dakshindia.org/the-state-of-tribunals-report-in-india-2025/"
+    },
+    "nclt_nclat_specific_capital": {
+      "value": "Over ₹15",
+      "unit": "lakh crore",
+      "value_numeric": 15,
+      "scope": "NCLT insolvency proceedings alone",
+      "as_of": "Jan 2026",
+      "source": "Economic Survey 2025–26",
+      "source_url": "https://www.business-standard.com/budget/news/insolvency-tribunals-may-take-a-decade-to-clear-pending-cases-eco-survey-126012901663_1.html"
+    },
+    "fy25_avg_cirp_days": {
+      "value": 853,
+      "deviation_pct": 158,
+      "source": "Economic Survey 2025–26 / IBBI FY25 data",
+      "source_url": "https://www.business-standard.com/budget/news/insolvency-tribunals-may-take-a-decade-to-clear-pending-cases-eco-survey-126012901663_1.html"
+    },
+    "delay_71pct_over_180": {
+      "value": 71,
+      "as_of": "2021",
+      "source": "Standing Committee on Finance 32nd Report",
+      "source_url": "https://ibbi.gov.in/uploads/resources/6ea3289fe2832f553b9022115479ff54.pdf",
+      "note": "71% of pending IBC cases had been pending more than 180 days"
+    },
+    "recovery_by_speed": {
+      "source": "IBBI data cited in Oxford Law Blogs, 3 Nov 2025",
+      "source_url": "https://blogs.law.ox.ac.uk/oblb/blog-post/2025/11/resolution-resilience-building-insolvency-risk-barometer-india",
+      "buckets": [
+        {"trigger_window": "Within 6 months of default", "recovery_pct": 45},
+        {"trigger_window": "6 months to 2 years", "recovery_pct": 30, "note": "interpolated band"},
+        {"trigger_window": "Beyond 2 years", "recovery_pct": 15}
+      ]
+    },
+    "liquidation_recovery_pct": {
+      "value": 6,
+      "scope": "Average recovery in cases that ended in liquidation",
+      "as_of": "Jun 2025",
+      "source": "IBBI cited in Oxford Law Blogs",
+      "source_url": "https://blogs.law.ox.ac.uk/oblb/blog-post/2025/11/resolution-resilience-building-insolvency-risk-barometer-india"
+    },
+    "haircut_admitted_claims_pct": {
+      "value": 67,
+      "source": "IBBI Jul–Sep 2025 Newsletter"
+    },
+    "nclt_contractual_staff_pct": {
+      "value": 88,
+      "source": "DAKSH State of Tribunals Report 2025",
+      "source_url": "https://www.dakshindia.org/the-state-of-tribunals-report-in-india-2025/"
+    },
+    "nclat_contractual_staff_pct": {
+      "value": 84.9,
+      "source": "DAKSH State of Tribunals Report 2025",
+      "source_url": "https://www.dakshindia.org/the-state-of-tribunals-report-in-india-2025/"
+    },
+    "all_tribunals_members": {
+      "value": 350,
+      "scope": "Members across all 10 commercial tribunals studied by DAKSH",
+      "source": "DAKSH State of Tribunals Report 2025"
+    },
+    "post_resolution_iima": {
+      "source": "IIM Ahmedabad / IBBI study, April 2026",
+      "source_url": "https://www.policyedge.in/p/ibbi-iim-ahmedabad-effectiveness-of-the-resolution-process-",
+      "highlights": [
+        {"metric": "Sales growth", "value": "+89%", "horizon": "5 years post-resolution"},
+        {"metric": "Capex growth", "value": "+106%", "horizon": "5 years"},
+        {"metric": "Market cap (listed resolved firms)", "value": "₹2.8L Cr → ₹9L Cr", "horizon": "5 years"},
+        {"metric": "Employee strength per unit asset", "value": "+200%", "horizon": "5 years"},
+        {"metric": "Asset turnover ratio", "value": "0.37 → 0.87", "horizon": "5 years"}
+      ]
+    },
+    "npa_trajectory": {
+      "source": "RBI / PIB",
+      "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2146819",
+      "note": "Gross NPAs of scheduled commercial banks. IBC is central to the trajectory; capacity constraints risk slowing further progress.",
+      "series": [
+        {"as_of": "Mar 2018", "gross_npa_pct": 11.2},
+        {"as_of": "Mar 2021", "gross_npa_pct": 9.11},
+        {"as_of": "Mar 2022", "gross_npa_pct": 7.28},
+        {"as_of": "Mar 2023", "gross_npa_pct": 4.97},
+        {"as_of": "Mar 2024", "gross_npa_pct": 3.47},
+        {"as_of": "Mar 2025", "gross_npa_pct": 2.58}
+      ]
+    }
+  },
+
+  "bottlenecks": {
+    "as_of": "2025",
+    "sources": [
+      "DAKSH State of Tribunals 2025",
+      "Standing Committee on Finance 32nd Report (2021) & 67th ATR (2023)",
+      "Supreme Court suo motu order, 29 Apr 2026",
+      "Economic Survey 2025–26"
+    ],
+    "items": [
+      {
+        "id": "vacancies",
+        "title": "Chronic vacancies",
+        "summary": "9 of 63 sanctioned member positions vacant. The SC has had to repeatedly compel appointments since 2021.",
+        "key_source": "SC suo motu order, 29 Apr 2026"
+      },
+      {
+        "id": "contractual_staff",
+        "title": "Contractual staffing",
+        "summary": "88% of NCLT's workforce is on contract — 'unheard of' for a quasi-judicial institution, per the Supreme Court. Undermines institutional memory and case-tracking.",
+        "key_source": "DAKSH 2025 / SC 29 Apr 2026"
+      },
+      {
+        "id": "scheduling",
+        "title": "Scheduling chaos",
+        "summary": "Members preside over multiple courts in a day. DAKSH found Chennai Bench Court-I listed 'after completion of' another bench in 83% of cause lists studied.",
+        "key_source": "DAKSH NCLT analysis, 2024"
+      },
+      {
+        "id": "infrastructure",
+        "title": "Physical infrastructure",
+        "summary": "Power outages, inadequate courtrooms, lack of permanent premises — raised in writing to MCA by an RS MP in May 2026.",
+        "key_source": "Letter to MoS MCA, 18 May 2026"
+      },
+      {
+        "id": "domain_expertise",
+        "title": "Domain expertise gap",
+        "summary": "Members appointed often lack economic and business expertise. Technical members are drawn from ICLS but commercial sectoral knowledge varies widely.",
+        "key_source": "DAKSH 2025"
+      },
+      {
+        "id": "it_systems",
+        "title": "IT and digitisation",
+        "summary": "Integrated case-management IT platform repeatedly recommended (Standing Committee 2021, 2024) but only partially implemented. E-filing exists; hybrid courts uneven across benches.",
+        "key_source": "Standing Committee 32nd & 67th Reports"
+      },
+      {
+        "id": "rp_capacity",
+        "title": "Resolution Professional capacity",
+        "summary": "Of 4,527 registered Resolution Professionals, only 2,198 (49%) hold active Authorisation for Assignment. CIRP throughput depends on RP availability as much as on NCLT capacity.",
+        "key_source": "Economic Survey 2025–26"
+      },
+      {
+        "id": "parallel_litigation",
+        "title": "Parallel litigation & adjournments",
+        "summary": "Overlapping proceedings before NCLT, NCLAT, High Courts, and Supreme Court routinely stay or delay CIRP. Frequent adjournments compound the problem.",
+        "key_source": "Standing Committee 32nd Report; SC 29 Apr 2026"
+      }
+    ]
+  }
+}
